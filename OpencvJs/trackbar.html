@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8'>
+	<title>Trackbar</title>
+	<style>
+		canvas{
+			width:300px;
+			height:300px;
+			border:2px solid black;
+		}
+	</style>
+</head>
+<body>
+<h2>OpenCV.js TrackBar</h2>
+<p id="status">Opencv is loading...</p>
+TrackBar:<input type="range" id="trackbar" value="50" min="0" max="100" step="1" oninput="callback()"><label id="weightValue">50</label>
+<button onclick="show()">Click</button>
+<div>
+	<canvas id="canvas1"></canvas>
+	<canvas id="canvas2"></canvas>
+	<canvas id="canvas3"></canvas>
+</div>
+
+<script src="../../opencv.js"></script>
+<script type="text/javascript">
+function callback(){
+	let weightValue = document.getElementById("weightValue");
+	let trackbar = document.getElementById("trackbar");
+	let alpha = trackbar.value / trackbar.max;
+	let beta = (1.0 - alpha);
+	let src1 = cv.imread("canvas1");
+	let src2 = cv.imread("canvas2");
+	let dst = new cv.Mat();
+
+	weightValue.innerHTML = trackbar.value;
+	cv.addWeighted(src1, alpha, src2, beta, 0.0, dst, -1);
+	cv.imshow("canvas3", dst);
+	
+	dst.delete();
+	src1.delete();
+	src2.delete();
+}
+
+function onOpenCvReady(){
+	document.getElementById('status').innerHTML = 'OpenCv.js is ready';
+
+	/*
+	let img1 = document.createElement("img");
+	let img2 = document.createElement("img");
+	img1.src = './images/apple.jpg';
+	img2.src = './images/orange.jpg';
+	cv.imshow('canvas1', cv.imread(img1));
+	cv.imshow('canvas2', cv.imread(img2));
+	*/
+}
+function show(){
+	let img1 = document.createElement("img");
+	let img2 = document.createElement("img");
+	img1.src = './images/apple.jpg';
+	img2.src = './images/orange.jpg';
+	cv.imshow('canvas1', cv.imread(img1));
+	cv.imshow('canvas2', cv.imread(img2));
+}
+//show();
+</script>
+<!--<script async src="./opencv.js" onload="onOpenCvReady()" type="text/javascript"></script>-->
+</body>
+</html>

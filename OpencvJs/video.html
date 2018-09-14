@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Opencvjs video</title>
+	<style>
+		.show{
+			border:1px solid black;
+		}
+	</style>
+</head>
+<body>
+<h2>OpenCVjs Video</h2>
+<div>
+	<video id="videoInput" class="show"></video>
+	<canvas id="canvasOutput" class="show"></canvas>
+</div>
+
+<script src="../../opencv.js"></script>
+<script>
+	let video = document.getElementById('videoInput');
+	let src = new cv.Mat(video.width, video.height, cv.CV_8UC4);
+	let dst = new cv.Mat(video.width, video.height, cv.CV_8UC1);
+	let cap = new cv.VideoCapture(video);
+	const FPS = 30;
+	function process(){
+		try{
+			/*if(!stream){
+				src.delete();
+				dst.delete();
+				return;
+			}*/
+			let begin = Date.now();
+			cap.read(src);
+			cv.cvtColor(src, dst, cv.COLOR_RGBA2GRAY);
+			cv.imshow('canvasOutput');
+			let delay = 1000/FPS - (Date.now() - begin);
+			setTimeout(process, delay);
+		} catch(err){
+			console.log(err);
+		}
+	}
+	setTimeout(process, 0);
+	
+</script>
+</body>
+</html>
