@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>ROI</title>
+</head>
+<body>
+    <img id="img" src="./images/apple.jpg" width="300" height="300"/>
+    <canvas id="canvasInput" width="300" height="300"
+style="border:1px solid #000000;"></canvas>
+    <canvas id="canvasOutput" style="border:1px solid #000000"></canvas>
+</body>
+<script type="javascript" src="./opencv.js"></script>
+<script type="javascript">
+    var c=document.getElementById("canvasInput");
+    //var ctx=c.getContext("2d");
+    //var img=document.getElementById("img");
+    //ctx.drawImage(img,300,300);
+    let mat = cv.imread(c);
+    cv.imshow('canvasInput', mat);
+
+    let src = cv.imread('canvasInput');
+    let dst = new cv.Mat();
+    let rect = new cv.Rect(100, 100, 100, 100);
+    dst = src.roi(rect);
+    cv.imshow('canvasOutput', dst);
+    src.delete();
+    dst.delete();
+</script>
+</html>
